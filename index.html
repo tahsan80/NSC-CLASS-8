@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NSC Class 8 - Our Class Website</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f4ff;
+            color: #172554;
+        }
+
+        header {
+            background: linear-gradient(135deg, #172554, #2563eb);
+            color: white;
+            text-align: center;
+            padding: 55px 20px;
+        }
+
+        header h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 18px;
+        }
+
+        nav {
+            background-color: #1e40af;
+            padding: 17px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 12px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #bfdbfe;
+        }
+
+        section {
+            background-color: white;
+            margin: 25px auto;
+            padding: 30px 20px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1000px;
+            text-align: center;
+            box-shadow: 0 3px 12px #d1d5db;
+        }
+
+        h2 {
+            color: #1e40af;
+        }
+
+        .welcome {
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .student {
+            background-color: #eff6ff;
+            width: 200px;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #bfdbfe;
+        }
+
+        .student img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .student h3 {
+            color: #1e3a8a;
+        }
+
+        .about-box {
+            background-color: #eff6ff;
+            padding: 20px;
+            border-radius: 12px;
+            line-height: 1.8;
+        }
+
+        .button {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        footer {
+            background-color: #172554;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 30px;
+            }
+
+            nav a {
+                margin: 6px;
+                font-size: 14px;
+            }
+
+            section {
+                width: 94%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header>
+        <h1>NSC CLASS 8</h1>
+        <p>Welcome to Our Class Website!</p>
+        <p>Together We Learn, Together We Grow.</p>
+    </header>
+
+    <!-- NAVIGATION MENU -->
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#gallery">Students</a>
+        <a href="#about">About Us</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <!-- HOME SECTION -->
+
+    <section id="home">
+        <h2>Welcome to NSC Class 8!</h2>
+
+        <p class="welcome">
+            Welcome to our class website.
+            This is a place where we can share
+            our class memories and special moments.
+        </p>
+
+        <a href="#gallery" class="button">
+            Explore Our Gallery
+        </a>
+    </section>
+
+    <!-- STUDENT GALLERY -->
+
+    <section id="gallery">
+        <h2>Our Student Gallery</h2>
+
+        <p>Meet our wonderful classmates!</p>
+
+        <div class="gallery">
+
+            <div class="student">
+                <img src="student1.jpg" alt="Student 1 photo">
+                <h3>Student 1</h3>
+            </div>
+
+            <div class="student">
+                <img src="student2.jpg" alt="Student 2 photo">
+                <h3>Student 2</h3>
+            </div>
+
+            <div class="student">
+                <img src="student3.jpg" alt="Student 3 photo">
+                <h3>Student 3</h3>
+            </div>
+
+            <div class="student">
+                <img src="student4.jpg" alt="Student 4 photo">
+                <h3>Student 4</h3>
+            </div>
+
+            <div class="student">
+                <img src="student5.jpg" alt="Student 5 photo">
+                <h3>Student 5</h3>
+            </div>
+
+            <div class="student">
+                <img src="student6.jpg" alt="Student 6 photo">
+                <h3>Student 6</h3>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+
+    <section id="about">
+        <h2>About Our Class</h2>
+
+        <div class="about-box">
+            <p>
+                We are the students of NSC Class 8.
+            </p>
+
+            <p>
+                Our class is full of learning,
+                friendship and unforgettable memories.
+            </p>
+
+            <p>
+                This website is created to celebrate
+                our class and share our memories.
+            </p>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+
+    <section id="contact">
+
+<section id="contact">
+    <h2>Contact Us</h2>
+
+    <p>Have questions? Contact our class!</p>
+
+    <p>
+        <strong>Official Phone:01820740035</strong>
+        <a href="tel:+8801820740035">
+        
+        </a>
+    </p>
+
+    <p>
+        <strong>Official Email:</strong>
+        <a href="mailto:tashanrafi1@gmail.com">
+            tashanrafi1@gmail.com
+        </a>
+    </p>
+
+    <p>Thank you for visiting NSC Class 8!</p>
+</section>
+```
+
+<box border radius="lg" padding={3} gap={3}>
+  <radio-group direction="col" value={contact} onChange={setContact}>
+    <radio value="school"></radio>
+    <radio value="class"></radio>
+    <radio value="both"></radio>
+  </radio-group>
+  <button block onClick={()=></button>
+</box>
+        <h2>Contact Us</h2>
+
+        <p>
+            Thank you for visiting our class website!
+        </p>
+
+        <p>
+            Welcome to NSC Class 8.
+        </p>
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer>
+        <p>NSC Class 8 | 2026</p>
+        <p>Made with ❤️ by Our Class</p>
+    </footer>
+
+</body>
+</html>
+
+
