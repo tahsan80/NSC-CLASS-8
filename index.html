@@ -1,315 +1,389 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSC Class 8 | Our Class Website</title>
 
-    <title>NSC Class 8 - Our Class Website</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f0f4ff;
-            color: #172554;
-        }
-
-        header {
-            background: linear-gradient(135deg, #172554, #2563eb);
-            color: white;
-            text-align: center;
-            padding: 55px 20px;
-        }
-
-        header h1 {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        header p {
-            font-size: 18px;
-        }
-
-        nav {
-            background-color: #1e40af;
-            padding: 17px;
-            text-align: center;
-            position: sticky;
-            top: 0;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 12px;
-            font-weight: bold;
-        }
-
-        nav a:hover {
-            color: #bfdbfe;
-        }
-
-        section {
-            background-color: white;
-            margin: 25px auto;
-            padding: 30px 20px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 1000px;
-            text-align: center;
-            box-shadow: 0 3px 12px #d1d5db;
-        }
-
-        h2 {
-            color: #1e40af;
-        }
-
-        .welcome {
-            font-size: 18px;
-            line-height: 1.7;
-        }
-
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .student {
-            background-color: #eff6ff;
-            width: 200px;
-            padding: 15px;
-            border-radius: 15px;
-            border: 1px solid #bfdbfe;
-        }
-
-        .student img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .student h3 {
-            color: #1e3a8a;
-        }
-
-        .about-box {
-            background-color: #eff6ff;
-            padding: 20px;
-            border-radius: 12px;
-            line-height: 1.8;
-        }
-
-        .button {
-            display: inline-block;
-            background-color: #2563eb;
-            color: white;
-            padding: 12px 25px;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-top: 10px;
-        }
-
-        footer {
-            background-color: #172554;
-            color: white;
-            text-align: center;
-            padding: 25px;
-            margin-top: 40px;
-        }
-
-        @media (max-width: 600px) {
-            header h1 {
-                font-size: 30px;
-            }
-
-            nav a {
-                margin: 6px;
-                font-size: 14px;
-            }
-
-            section {
-                width: 94%;
-            }
-        }
-    </style>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f6fc;
+  color:#1c2940;
+}
+header{
+  background:linear-gradient(130deg,#102653,#246bd8);
+  color:white;
+  text-align:center;
+  padding:48px 15px;
+}
+header h1{font-size:38px;margin:0}
+header p{font-size:16px}
+.container{max-width:1100px;margin:auto;padding:20px}
+.card{
+  background:white;
+  padding:23px;
+  border-radius:15px;
+  margin:22px 0;
+  box-shadow:0 4px 18px #15294d12;
+}
+h2{color:#174b9b}
+h3{color:#263c60}
+input,textarea,button{
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border:1px solid #ccd6e7;
+  border-radius:8px;
+  font-size:15px;
+}
+textarea{min-height:85px;resize:vertical}
+button{
+  background:#1762c4;
+  color:white;
+  border:0;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{background:#104b9b}
+.secondary{background:#687991}
+.danger{background:#c0392b}
+.small-btn{width:auto;padding:9px 13px}
+.hidden{display:none!important}
+.roles{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.role{
+  padding:22px 8px;
+  text-align:center;
+  border:2px solid #dce5f5;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:bold;
+  background:#f8faff;
+}
+.role.selected{
+  border-color:#1762c4;
+  background:#e7f0ff;
+}
+nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  background:#102653;
+  padding:13px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+nav a{
+  color:white;
+  text-decoration:none;
+  padding:9px 12px;
+  border-radius:7px;
+  font-size:14px;
+}
+nav a:hover{background:#246bd8}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+}
+.stat{
+  background:#eaf1ff;
+  border-radius:12px;
+  padding:20px;
+  text-align:center;
+}
+.stat strong{
+  display:block;
+  font-size:30px;
+  color:#1762c4;
+}
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(165px,1fr));
+  gap:15px;
+}
+.person,.photo-card{
+  background:#f5f8ff;
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+  overflow:hidden;
+}
+.person img{
+  width:100%;
+  height:175px;
+  object-fit:cover;
+  border-radius:9px;
+}
+.photo-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:9px;
+}
+.item{
+  background:#f3f7ff;
+  padding:15px;
+  border-radius:10px;
+  margin:12px 0;
+  overflow-wrap:anywhere;
+}
+.item button{width:auto}
+hr{border:0;border-top:1px solid #e2e8f2;margin:25px 0}
+footer{
+  background:#102653;
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+.message{font-size:14px;color:#b42318}
+@media(max-width:650px){
+  .roles{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:1fr}
+  header h1{font-size:29px}
+  nav a{font-size:12px;padding:7px}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-    <!-- HEADER -->
+<!-- ROLE SELECTION -->
+<section id="rolePage" class="container">
+  <div class="card" style="text-align:center;margin-top:50px">
+    <h1>🏫 NSC CLASS 8</h1>
+    <p>Our Class • Our Memories • Our Future</p>
+    <h2>Select Your Role</h2>
 
-    <header>
-        <h1>NSC CLASS 8</h1>
-        <p>Welcome to Our Class Website!</p>
-        <p>Together We Learn, Together We Grow.</p>
-    </header>
+    <div class="roles">
+      <div class="role" onclick="chooseRole('Admin',this)">
+        👑<br>Admin
+      </div>
+      <div class="role" onclick="chooseRole('Student',this)">
+        🎓<br>Student
+      </div>
+      <div class="role" onclick="chooseRole('Teacher',this)">
+        👨‍🏫<br>Teacher
+      </div>
+      <div class="role" onclick="chooseRole('Visitor',this)">
+        🌐<br>Visitor
+      </div>
+    </div>
 
-    <!-- NAVIGATION MENU -->
+    <div id="codeArea" class="hidden">
+      <p id="codeLabel">Enter your access code</p>
+      <input type="password" id="accessCode" placeholder="Enter Access Code">
+      <input type="email" id="adminEmail" class="hidden" placeholder="Admin Email">
+      <input type="password" id="adminPassword" class="hidden" placeholder="Admin Password">
+    </div>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#gallery">Students</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact</a>
-    </nav>
-
-    <!-- HOME SECTION -->
-
-    <section id="home">
-        <h2>Welcome to NSC Class 8!</h2>
-
-        <p class="welcome">
-            Welcome to our class website.
-            This is a place where we can share
-            our class memories and special moments.
-        </p>
-
-        <a href="#gallery" class="button">
-            Explore Our Gallery
-        </a>
-    </section>
-<section id="students">
-    <h2>Our Classmates</h2>
-
-        <li> Rafi</li>
-        <li>Rajon</li>
-        <li> Arish</li>
-        <li> Ramim</li>
-        <li>Shan</li>
-        <li>Minhaz</li>
-        <li>Baijid</li>
-        <li>Naomin</li>
-        <li>Araf</li>
-        <li>Mahim</li>
-    <ol>
-         </section>
-    <!-- STUDENT GALLERY -->
-
-    <section id="gallery">
-        <h2>Our Student Gallery</h2>
-
-        <p>Meet our wonderful classmates!</p>
-
-        <div class="gallery">
-
-            <div class="student">
-                <img src="student1.jpg" alt="Student 1 photo">
-                <h3>Student 1</h3>
-            </div>
-
-            <div class="student">
-                <img src="student2.jpg" alt="Student 2 photo">
-                <h3>Student 2</h3>
-            </div>
-
-            <div class="student">
-                <img src="student3.jpg" alt="Student 3 photo">
-                <h3>Student 3</h3>
-            </div>
-
-            <div class="student">
-                <img src="student4.jpg" alt="Student 4 photo">
-                <h3>Student 4</h3>
-            </div>
-
-            <div class="student">
-                <img src="student5.jpg" alt="Student 5 photo">
-                <h3>Student 5</h3>
-            </div>
-
-            <div class="student">
-                <img src="student6.jpg" alt="Student 6 photo">
-                <h3>Student 6</h3>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ABOUT SECTION -->
-
-    <section id="about">
-        <h2>About Our Class</h2>
-
-        <div class="about-box">
-            <p>
-                We are the students of NSC Class 8.
-            </p>
-
-            <p>
-                Our class is full of learning,
-                friendship and unforgettable memories.
-            </p>
-
-            <p>
-                This website is created to celebrate
-                our class and share our memories.
-            </p>
-        </div>
-    </section>
-
-    <!-- CONTACT SECTION -->
-
-    <section id="contact">
-
-<section id="contact">
-    <h2>Contact Us</h2>
-
-    <p>Have questions? Contact our class!</p>
-
-    <p>
-        <strong>Official Phone:01820740035</strong>
-        <a href="tel:+8801820740035">
-        
-        </a>
-    </p>
-
-    <p>
-        <strong>Official Email:</strong>
-        <a href="mailto:tashanrafi1@gmail.com">
-            tashanrafi1@gmail.com
-        </a>
-    </p>
-
-    <p>Thank you for visiting NSC Class 8!</p>
+    <button onclick="enterSite()">Submit & Enter Website</button>
+    <p id="loginMessage" class="message"></p>
+  </div>
 </section>
-```
 
-<box border radius="lg" padding={3} gap={3}>
-  <radio-group direction="col" value={contact} onChange={setContact}>
-    <radio value="school"></radio>
-    <radio value="class"></radio>
-    <radio value="both"></radio>
-  </radio-group>
-  <button block onClick={()=></button>
-</box>
-        <h2>Contact Us</h2>
+<!-- MAIN WEBSITE -->
+<div id="mainSite" class="hidden">
 
-        <p>
-            Thank you for visiting our class website!
-        </p>
+<header>
+  <h1>NSC CLASS 8</h1>
+  <p>Our Class • Our Memories • Our Future</p>
+  <p id="welcomeText"></p>
+</header>
 
-        <p>
-            Welcome to NSC Class 8.
-        </p>
-    </section>
+<nav>
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#students">Students</a>
+  <a href="#teachers">Teachers</a>
+  <a href="#events">Events</a>
+  <a href="#exams">Exams</a>
+  <a href="#notices">Notices</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#socialMedia">Social Media</a>
+</nav>
 
-    <!-- FOOTER -->
+<main class="container">
 
-    <footer>
-        <p>NSC Class 8 | 2026</p>
-        <p>Made with ❤️ by Our Class</p>
-    </footer>
+<!-- HOME -->
+<section id="home" class="card">
+  <h2>Welcome to NSC Class 8!</h2>
+  <p>
+    Welcome to our class website. This is a place to share
+    our class information, students, teachers, events,
+    examinations, notices and memories.
+  </p>
 
-</body>
-</html>
+  <div class="stats">
+    <div class="stat">
+      <strong id="homeStudentCount">0</strong>
+      Students
+    </div>
+    <div class="stat">
+      <strong id="homeTeacherCount">0</strong>
+      Teachers
+    </div>
+    <div class="stat">
+      <strong id="homeEventCount">0</strong>
+      Events
+    </div>
+  </div>
+</section>
 
+<!-- ABOUT -->
+<section id="about" class="card">
+  <h2>About Our Class</h2>
+  <p>
+    We are the students of NSC Class 8. Our class is a
+    community of learning, friendship, teamwork and memories.
+  </p>
+  <p>
+    This website helps us share our activities and important
+    class information.
+  </p>
+</section>
 
+<!-- STUDENTS -->
+<section id="students" class="card">
+  <h2>🎓 Our Students</h2>
+  <h3>Total Students: <span id="studentCount">0</span></h3>
+  <div id="studentList" class="gallery"></div>
+
+  <div id="studentAdmin" class="hidden">
+    <hr>
+    <h3>➕ Add Student</h3>
+    <input id="studentName" placeholder="Student Full Name">
+    <input id="studentRoll" placeholder="Roll Number (Optional)">
+    <input id="studentPhoto" type="file" accept="image/*">
+    <button onclick="addPerson('student')">Add Student</button>
+  </div>
+</section>
+
+<!-- TEACHERS -->
+<section id="teachers" class="card">
+  <h2>👨‍🏫 Our Teachers</h2>
+  <h3>Total Teachers: <span id="teacherCount">0</span></h3>
+  <div id="teacherList" class="gallery"></div>
+
+  <div id="teacherAdmin" class="hidden">
+    <hr>
+    <h3>➕ Add Teacher</h3>
+    <input id="teacherName" placeholder="Teacher Full Name">
+    <input id="teacherSubject" placeholder="Subject / Designation">
+    <input id="teacherPhoto" type="file" accept="image/*">
+    <button onclick="addPerson('teacher')">Add Teacher</button>
+  </div>
+</section>
+
+<!-- EVENTS -->
+<section id="events" class="card">
+  <h2>🎉 Class Events</h2>
+  <div id="eventList"></div>
+</section>
+
+<!-- EXAMS -->
+<section id="exams" class="card">
+  <h2>📚 Examination Schedule</h2>
+  <div id="examList"></div>
+</section>
+
+<!-- NOTICES -->
+<section id="notices" class="card">
+  <h2>📢 Notice Board</h2>
+  <div id="noticeList"></div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="card">
+  <h2>📸 Photo Gallery</h2>
+  <div id="photoGallery" class="gallery"></div>
+</section>
+
+<!-- SOCIAL MEDIA -->
+<section id="socialMedia" class="card">
+  <h2>🌐 Social Media</h2>
+  <p>Find our students and teachers on social media.</p>
+
+  <h3>🎓 Student Social Media</h3>
+  <div id="studentSocialList"></div>
+
+  <hr>
+  <h3>👨‍🏫 Teacher Social Media</h3>
+  <div id="teacherSocialList"></div>
+
+  <div id="socialAdmin" class="hidden">
+    <hr>
+    <h3>➕ Add Social Media Account</h3>
+    <select id="socialType">
+      <option value="student">Student</option>
+      <option value="teacher">Teacher</option>
+    </select>
+    <input id="socialName" placeholder="Student / Teacher Name">
+    <select id="socialPlatform">
+      <option value="Instagram">Instagram</option>
+      <option value="Facebook">Facebook</option>
+      <option value="Other">Other</option>
+    </select>
+    <input id="socialUrl" type="url" placeholder="Profile link (https://...) ">
+    <button onclick="addSocialAccount()">Add Social Media</button>
+  </div>
+</section>
+
+<!-- PHOTO UPLOAD -->
+<section id="uploadArea" class="card hidden">
+  <h2>📷 Upload Class Photos</h2>
+  <p>Only the authenticated Admin can upload class photos. Everyone can view them.</p>
+  <input type="file" id="photoInput" accept="image/*" multiple>
+  <button onclick="uploadPhotos()">Upload Photos</button>
+  <p id="uploadMessage"></p>
+</section>
+
+<!-- ADMIN DASHBOARD -->
+<section id="managementArea" class="card hidden">
+  <h2>👑 Admin Dashboard</h2>
+  <p>Manage your class website from here.</p>
+
+  <hr>
+  <h3>➕ Add New Event</h3>
+  <input id="eventName" placeholder="Event Name">
+  <input id="eventDate" type="date">
+  <input id="eventTime" type="time">
+  <textarea id="eventDetails" placeholder="Event Details"></textarea>
+  <button onclick="addItem('events')">Add Event</button>
+
+  <hr>
+  <h3>➕ Add New Exam</h3>
+  <input id="examName" placeholder="Exam Name">
+  <input id="examDate" type="date">
+  <input id="examTime" type="time">
+  <textarea id="examDetails" placeholder="Exam Details"></textarea>
+  <button onclick="addItem('exams')">Add Exam</button>
+
+  <hr>
+  <h3>➕ Publish New Notice</h3>
+  <input id="noticeName" placeholder="Notice Title">
+  <textarea id="noticeDetails" placeholder="Notice Details"></textarea>
+  <button onclick="addNotice()">Publish Notice</button>
+</section>
+
+<button class="secondary" onclick="logout()">Change Role / Exit</button>
+
+</main>
+
+<footer>
+  <h3>NSC CLASS 8</h3>
+  <p>Our Class • Our Memories • Our Future</p>
+  <p>© 2026 NSC Class 8</p>
+</footer>
+
+</div>
