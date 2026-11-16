@@ -212,9 +212,7 @@ footer{
   <a href="#gallery">Gallery</a>
   <a href="#socialMedia">Social Media</a>
 </nav>
-
 <main class="container">
-
 <!-- HOME -->
 <section id="home" class="card">
   <h2>Welcome to NSC Class 8!</h2>
@@ -223,7 +221,6 @@ footer{
     our class information, students, teachers, events,
     examinations, notices and memories.
   </p>
-
   <div class="stats">
     <div class="stat">
       <strong id="homeStudentCount">0</strong>
@@ -239,7 +236,6 @@ footer{
     </div>
   </div>
 </section>
-
 <!-- ABOUT -->
 <section id="about" class="card">
   <h2>About Our Class</h2>
@@ -252,7 +248,6 @@ footer{
     class information.
   </p>
 </section>
-
 <!-- STUDENTS -->
 <section id="students" class="card">
   <h2>🎓 Our Students</h2>
@@ -342,7 +337,7 @@ footer{
 <!-- PHOTO UPLOAD -->
 <section id="uploadArea" class="card hidden">
   <h2>📷 Upload Class Photos</h2>
-  <p>Only the authenticated Admin can upload class photos. Everyone can view them.</p>
+  <p>Admin, Students and Teachers can upload class photos. Everyone can view them.</p>
   <input type="file" id="photoInput" accept="image/*" multiple>
   <button onclick="uploadPhotos()">Upload Photos</button>
   <p id="uploadMessage"></p>
@@ -351,7 +346,7 @@ footer{
 <!-- ADMIN DASHBOARD -->
 <section id="managementArea" class="card hidden">
   <h2>👑 Admin Dashboard</h2>
-  <p>Manage your class website from here.</p>
+  <p>Only Admin can manage events, exams, notices and social media.</p>
 
   <hr>
   <h3>➕ Add New Event</h3>
@@ -387,209 +382,8 @@ footer{
 </footer>
 
 </div>
+
 <script>
-/* NSC CLASS 8 - SUPABASE VERSION */
-const SUPABASE_URL = "https://huekcfcajrrupvdmbxen.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_nMGsSlrDdOLWi19fx4H4mA_WnyjFm_H";
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
-
-const ACCESS_CODES = { Student: "NSC8ST26", Teacher: "NSC8TC26" };
-let selectedRole = "";
-let role = "";
-let currentUser = null;
-let sectionRows = {};
-let students = [], teachers = [], events = [], exams = [], notices = [], photos = [], socialAccounts = [];
-const TABLE = "nsc_content";
-const BUCKET = "nsc-photos";
-const sectionKeys = {
-  students: "students", teachers: "teachers", events: "events", exams: "exams",
-  notices: "notices", photos: "photos", socialAccounts: "social_accounts"
-};
-
-function chooseRole(name, element) {
-  selectedRole = name;
-  document.querySelectorAll(".role").forEach(el => el.classList.remove("selected"));
-  element.classList.add("selected");
-  const admin = name === "Admin";
-  document.getElementById("codeArea").classList.toggle("hidden", name === "Visitor");
-  document.getElementById("accessCode").classList.toggle("hidden", admin);
-  document.getElementById("adminEmail").classList.toggle("hidden", !admin);
-  document.getElementById("adminPassword").classList.toggle("hidden", !admin);
-  document.getElementById("codeLabel").textContent = admin ? "Admin Login" : "Enter your access code";
-  document.getElementById("loginMessage").textContent = "";
-  document.getElementById("accessCode").value = "";
-}
-
-async function enterSite() {
-  if (!selectedRole) return alert("Please select your role!");
-  if (selectedRole === "Admin") {
-    const email = document.getElementById("adminEmail").value.trim();
-    const password = document.getElementById("adminPassword").value;
-    if (!email || !password) {
-      document.getElementById("loginMessage").textContent = "Enter your Admin email and password.";
-      return;
-    }
-    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if (error) {
-      document.getElementById("loginMessage").textContent = "Admin login failed. Check your email and password.";
-      return;
-    }
-    currentUser = data.user;
-    const { data: adminRow, error: adminError } = await supabaseClient
-      .from("nsc_admins").select("user_id").eq("user_id", currentUser.id).maybeSingle();
-    if (adminError || !adminRow) {
-      await supabaseClient.auth.signOut();
-      currentUser = null;
-      document.getElementById("loginMessage").textContent = "This account is not registered as an NSC Admin.";
-      return;
-    }
-  } else if (selectedRole !== "Visitor") {
-    if (document.getElementById("accessCode").value !== ACCESS_CODES[selectedRole]) {
-      document.getElementById("loginMessage").textContent = "Incorrect Access Code. Try Again!";
-      return;
-    }
-  }
-  role = selectedRole;
-  document.getElementById("rolePage").classList.add("hidden");
-  document.getElementById("mainSite").classList.remove("hidden");
-  document.getElementById("welcomeText").textContent = "Welcome! You entered as " + role;
-  document.getElementById("uploadArea").classList.toggle("hidden", role !== "Admin");
-  document.getElementById("managementArea").classList.toggle("hidden", role !== "Admin");
-  document.getElementById("studentAdmin").classList.toggle("hidden", role !== "Admin");
-  document.getElementById("teacherAdmin").classList.toggle("hidden", role !== "Admin");
-  document.getElementById("socialAdmin").classList.toggle("hidden", role !== "Admin");
-  await loadAllData();
-}
-
-async function logout() {
-  if (role === "Admin") await supabaseClient.auth.signOut();
-  currentUser = null; role = ""; selectedRole = "";
-  document.getElementById("mainSite").classList.add("hidden");
-  document.getElementById("rolePage").classList.remove("hidden");
-  document.getElementById("accessCode").value = "";
-  document.getElementById("adminEmail").value = "";
-  document.getElementById("adminPassword").value = "";
-  document.querySelectorAll(".role").forEach(el => el.classList.remove("selected"));
-}
-
-function safeText(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" })[char]);
-}
-function requireAdmin() {
-  if (role !== "Admin" || !currentUser) { alert("Admin login required!"); return false; }
-  return true;
-}
-
-async function loadSection(section) {
-  const { data, error } = await supabaseClient.from(TABLE).select("id,data").eq("section", section).limit(1);
-  if (error) throw error;
-  if (data && data.length) {
-    sectionRows[section] = data[0].id;
-    return Array.isArray(data[0].data) ? data[0].data : [];
-  }
-  sectionRows[section] = null;
-  return [];
-}
-async function saveSection(section, value) {
-  if (!requireAdmin()) return false;
-  let result;
-  if (sectionRows[section]) {
-    result = await supabaseClient.from(TABLE).update({ data: value }).eq("id", sectionRows[section]);
-  } else {
-    result = await supabaseClient.from(TABLE).insert({ section, data: value }).select("id").single();
-    if (!result.error) sectionRows[section] = result.data.id;
-  }
-  if (result.error) { console.error(result.error); alert("Save failed: " + result.error.message); return false; }
-  return true;
-}
-async function loadAllData() {
-  try {
-    [students, teachers, events, exams, notices, photos, socialAccounts] = await Promise.all([
-      loadSection("students"), loadSection("teachers"), loadSection("events"), loadSection("exams"),
-      loadSection("notices"), loadSection("photos"), loadSection("social_accounts")
-    ]);
-    render();
-  } catch (error) {
-    console.error(error);
-    alert("Could not load website data. Check Supabase table and read policy.");
-  }
-}
-
-async function uploadImage(file) {
-  const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}-${cleanName}`;
-  const { error } = await supabaseClient.storage.from(BUCKET).upload(path, file, { cacheControl: "3600", upsert: false });
-  if (error) throw error;
-  const { data } = supabaseClient.storage.from(BUCKET).getPublicUrl(path);
-  return { url: data.publicUrl, path };
-}
-async function deleteStoredImage(photo) {
-  if (photo && photo.path) {
-    const { error } = await supabaseClient.storage.from(BUCKET).remove([photo.path]);
-    if (error) console.warn("Photo storage cleanup failed", error);
-  }
-}
-function photoUrl(value) { return typeof value === "string" ? value : (value && value.url) || ""; }
-
-async function addPerson(type) {
-  if (!requireAdmin()) return;
-  const isStudent = type === "student";
-  const nameInput = document.getElementById(isStudent ? "studentName" : "teacherName");
-  const extraInput = document.getElementById(isStudent ? "studentRoll" : "teacherSubject");
-  const photoInput = document.getElementById(isStudent ? "studentPhoto" : "teacherPhoto");
-  const name = nameInput.value.trim(), extra = extraInput.value.trim(), file = photoInput.files[0];
-  if (!name || !file) return alert("Please enter a name and choose a photo.");
-  if (!file.type.startsWith("image/")) return alert("Please choose an image.");
-  try {
-    const photo = await uploadImage(file);
-    const list = isStudent ? students : teachers;
-    const section = isStudent ? "students" : "teachers";
-    list.push({ name, extra, photo: photo.url, photoPath: photo.path });
-    if (await saveSection(section, list)) {
-      nameInput.value = ""; extraInput.value = ""; photoInput.value = ""; render(); alert("Successfully added!");
-    } else { list.pop(); await deleteStoredImage(photo); }
-  } catch (error) { console.error(error); alert("Photo upload failed: " + error.message); }
-}
-async function deletePerson(type, index) {
-  if (!requireAdmin() || !confirm("Delete this person?")) return;
-  const isStudent = type === "student", list = isStudent ? students : teachers;
-  const section = isStudent ? "students" : "teachers", removed = list.splice(index, 1)[0];
-  if (await saveSection(section, list)) { await deleteStoredImage({ path: removed.photoPath }); render(); }
-  else list.splice(index, 0, removed);
-}
-function renderPeople() {
-  document.getElementById("studentCount").textContent = students.length;
-  document.getElementById("teacherCount").textContent = teachers.length;
-  document.getElementById("homeStudentCount").textContent = students.length;
-  document.getElementById("homeTeacherCount").textContent = teachers.length;
-  document.getElementById("studentList").innerHTML = students.map((person,index) => `
-    <div class="person"><img src="${safeText(photoUrl(person.photo))}" alt="Student"><h3>${safeText(person.name)}</h3>
-    ${person.extra ? `<p>Roll: ${safeText(person.extra)}</p>` : ""}
-    ${role === "Admin" ? `<button class="danger small-btn" onclick="deletePerson('student',${index})">Delete</button>` : ""}</div>`).join("") || "<p>No students added yet.</p>";
-  document.getElementById("teacherList").innerHTML = teachers.map((person,index) => `
-    <div class="person"><img src="${safeText(photoUrl(person.photo))}" alt="Teacher"><h3>${safeText(person.name)}</h3>
-    ${person.extra ? `<p>${safeText(person.extra)}</p>` : ""}
-    ${role === "Admin" ? `<button class="danger small-btn" onclick="deletePerson('teacher',${index})">Delete</button>` : ""}</div>`).join("") || "<p>No teachers added yet.</p>";
-}
-
-async function addItem(type) {
-  if (!requireAdmin()) return;
-  const isEvent = type === "events";
-  const nameInput = document.getElementById(isEvent ? "eventName" : "examName");
-  const dateInput = document.getElementById(isEvent ? "eventDate" : "examDate");
-  const timeInput = document.getElementById(isEvent ? "eventTime" : "examTime");
-  const detailsInput = document.getElementById(isEvent ? "eventDetails" : "examDetails");
-  const name = nameInput.value.trim(), date = dateInput.value, time = timeInput.value, details = detailsInput.value.trim();
-  if (!name || !date) return alert("Please enter a name and date.");
-  const list = isEvent ? events : exams;
-  list.push({ name, date, time, details });
-  if (await saveSection(type, list)) { nameInput.value = ""; dateInput.value = ""; timeInput.value = ""; detailsInput.value = ""; render(); alert("Successfully added!"); }
-  else list.pop();
-}
-async function addNotice() {
-  if (!requireAdmin()) return;
-  const name = document.getElementById("noticeName").value.trim(), details = document
-  <script>
 /* NSC CLASS 8 - SUPABASE VERSION */
 const SUPABASE_URL = "https://huekcfcajrrupvdmbxen.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_nMGsSlrDdOLWi19fx4H4mA_WnyjFm_H";
@@ -699,7 +493,6 @@ async function enterSite() {
   }
   await openWebsiteAs(selectedRole);
 }
-
 async function logout() {
   if (role === "Admin") await supabaseClient.auth.signOut();
   currentUser = null; role = ""; selectedRole = "";
